@@ -1,0 +1,90 @@
+tensorflow_model_server --port=8500 --rest_api_port=8501 --model_name=${cool} 
+
+to show information about the model:-
+/home/vagupta/anaconda2/bin/saved_model_cli show --dir /home/vagupta/Documents/IAS/tensorflow_serving_test/1 --all
+
+Export path:-
+/home/vagupta/Documents/IAS/tensorflow_serving_test/1
+
+
+sudo docker run -p 8501:8501 --mount type=bind,source=/home/vagupta/Documents/IAS/tensorflow_serving_test/1,target=/models/cool -e MODEL_NAME=cool -t tensorflow/serving
+
+sudo docker run -p 8501:8501 --mount type=bind,source=/home/vagupta/Documents/IAS/tensorflow_serving_test/1,target=/models/my_model -e MODEL_NAME=my_model -t tensorflow/serving
+
+
+tensorflow_model_server --port=8500 --rest_api_port=8501 --model_name=my_model --model_base_path=/home/vagupta/Documents/IAS/tensorflow_serving_test/1/my_model
+
+
+curl -d '{"instances": [1,2,3]}' -X POST http://localhost:8501/v1/models/my_model:predict
+
+
+GET http://localhost:8501/v1/models/my_model
+
+echo "deb [arch=amd64] http://storage.googleapis.com/tensorflow-serving-apt stable tensorflow-model-server tensorflow-model-server-universal" | sudo tee /etc/apt/sources.list.d/tensorflow-serving.list && 
+
+
+echo "deb [arch=amd64] http://storage.googleapis.com/tensorflow-serving-apt stable tensorflow-model-server tensorflow-model-server-universal" | sudo tee /etc/apt/sources.list.d/tensorflow-serving.list && \
+curl https://storage.googleapis.com/tensorflow-serving-apt/tensorflow-serving.release.pub.gpg | sudo apt-key add -
+
+
+tensorflow_model_server --port=8500 --rest_api_port=8501 --model_name=cool --model_base_path=/home/vagupta/Documents/IAS/tensorflow_serving_test
+
+
+docker run -p 8501:8501 --mount type=bind,source=/home/vagupta/Documents/IAS/tensorflow_serving_test/cool,target=/models/my_model -e MODEL_NAME=my_model -t tensorflow/serving
+
+
+curl -d  '[1,2,3]' -X POST http://localhost:8501/v1/models/my_model:predict
+
+curl -X POST http://0.0.0.0:5000/inference -H 'cache-control: no-cache' -H 'content-type: application/json' -H 'postman-token: 1b4663d0-fc47-007a-673d-721ebad9985e' -d '[1,2,3]'									
+
+
+curl -X POST http://0.0.0.0:5000/inference -H 'cache-control: no-cache' -H 'content-type: application/json' -H 'postman-token: 1b4663d0-fc47-007a-673d-721ebad9985e'  -d '[1,2,3]'
+
+
+
+curl -X POST http://localhost:8501/v1/models/my_model:predict -d '{"signature_name":"prediction","instances":[{"input":[1,2,3]}]}'
+
+curl -X POST http://localhost:8501/v1/models/my_model:predict -d '{instances":[{"input":[1,2,3]}]}'
+
+curl -X POST http://localhost:8501/v1/models/my_model:predict -d '{"instances":[{"in_tensor_name":[[1,2],[3,4]]}]}'
+
+
+
+ GET http://localhost:8501/v1/models/my_model
+
+python client.py --server localhost:
+
+GET http://localhost:8501/v1/models/my_model/metadata
+
+POST http://localhost:8501/v1/models/my_model:(classify|regress)
+
+POST http://localhost:8501/v1/models/my_model:predict
+
+{
+  "signature_name":"prediction",
+  "inputs": [1,2,3]
+}
+
+
+curl -X POST \
+ http://0.0.0.0:5000/inference \
+ -H 'cache-control: no-cache' \
+ -H 'content-type: application/json' \
+ -H 'postman-token: 1b4663d0-fc47-007a-673d-721ebad9985e' \
+ -d '[1,2,3]'
+
+
+ !pip install -q requests
+
+import requests
+headers = {"content-type": "application/json"}
+json_response = requests.post('http://localhost:8501/v1/models/fashion_model:predict', data=data, headers=headers)
+predictions = json.loads(json_response.text)['predictions']
+
+show(0, 'The model thought this was a {} (class {}), and it was actually a {} (class {})'.format(
+  class_names[np.argmax(predictions[0])], test_labels[0], class_names[np.argmax(predictions[0])], test_labels[0]))
+
+
+  docker exec mycontainer /path/to/test.sh
+
+  sudo docker run -p 8500:8500 -p 8501:8501 -it test
